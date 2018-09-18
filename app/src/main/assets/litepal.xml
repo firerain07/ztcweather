@@ -3,7 +3,7 @@
     <version value="1"/>
     <list>
         <mapping class="com.tanovo.twaqg.ztcweather.db.Province"/>
-        <mapping class="com.tanovo.twaqg.ztcweather.db.Province"/>
-        <mapping class="com.tanovo.twaqg.ztcweather.db.Province"/>
+        <mapping class="com.tanovo.twaqg.ztcweather.db.City"/>
+        <mapping class="com.tanovo.twaqg.ztcweather.db.County"/>
     </list>
 </litepal>
