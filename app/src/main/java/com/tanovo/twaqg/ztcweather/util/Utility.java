@@ -1,10 +1,13 @@
 package com.tanovo.twaqg.ztcweather.util;
 
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.google.gson.Gson;
 import com.tanovo.twaqg.ztcweather.db.City;
 import com.tanovo.twaqg.ztcweather.db.County;
 import com.tanovo.twaqg.ztcweather.db.Province;
+import com.tanovo.twaqg.ztcweather.gson.Weather;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,7 +18,9 @@ import org.json.JSONObject;
  */
 
 public class Utility {
-    /* 省级数据 */
+    /**
+     *  省级数据
+     */
     public static  boolean handleProvinceResponse(String response){
         if(!TextUtils.isEmpty(response)){
             try {
@@ -35,7 +40,12 @@ public class Utility {
         return false;
     }
 
-    /*  */
+    /**
+     *
+     * @param response
+     * @param provinceId
+     * @return
+     */
     public static  boolean handleCityResponse(String response,int provinceId){
         if(!TextUtils.isEmpty(response)){
             try {
@@ -56,7 +66,12 @@ public class Utility {
         return false;
     }
 
-    /*  */
+    /**
+     *
+     * @param response
+     * @param cityId
+     * @return
+     */
     public static  boolean handleCountyResponse(String response,int cityId){
         if(!TextUtils.isEmpty(response)){
             try {
@@ -75,5 +90,22 @@ public class Utility {
             }
         }
         return false;
+    }
+
+    /**
+     *
+     */
+    public static Weather handleWeatherResponse(String response){
+        try {
+            JSONObject jsonObject=new JSONObject(response);
+            JSONArray jsonArray=jsonObject.getJSONArray("HeWeather6");
+            String weatherContent=jsonArray.getJSONObject(0).toString();
+            Log.i("weather",weatherContent);
+            return new Gson().fromJson(weatherContent,Weather.class);
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

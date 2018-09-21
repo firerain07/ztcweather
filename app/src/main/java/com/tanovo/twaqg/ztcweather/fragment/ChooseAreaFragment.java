@@ -1,8 +1,10 @@
 package com.tanovo.twaqg.ztcweather.fragment;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import com.tanovo.twaqg.ztcweather.R;
 import com.tanovo.twaqg.ztcweather.db.City;
 import com.tanovo.twaqg.ztcweather.db.County;
 import com.tanovo.twaqg.ztcweather.db.Province;
+import com.tanovo.twaqg.ztcweather.ui.WeatherActivity;
 import com.tanovo.twaqg.ztcweather.util.HttpUtil;
 import com.tanovo.twaqg.ztcweather.util.Utility;
 
@@ -67,6 +70,7 @@ public class ChooseAreaFragment extends Fragment {
         listView=(ListView)view.findViewById(R.id.list_view);
         adapter=new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,dataList);
         listView.setAdapter(adapter);
+        currentLevel=0;
         return view;
     }
 
@@ -82,6 +86,13 @@ public class ChooseAreaFragment extends Fragment {
                 }else if(currentLevel==LEVEL_CITY){
                     selectedCity=cityList.get(position);
                     queryCounties();
+                }else if(currentLevel==LEVEL_COUNTY){
+                    String weatherId=countyList.get(position).getWeatherId();
+                    Log.i("weatherId", weatherId);
+                    Intent intent=new Intent(getActivity(), WeatherActivity.class);
+                    intent.putExtra("weatherId",weatherId);
+                    startActivity(intent);
+                    getActivity().finish();
                 }
             }
         });

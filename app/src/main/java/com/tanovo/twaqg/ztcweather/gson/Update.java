@@ -11,8 +11,8 @@ import java.util.Date;
 public class Update {
 
     @SerializedName("loc")
-    public Date localDate;
+    public String localDate;
 
     @SerializedName("utc")
-    public Date utcDate;
+    public String  utcDate;
 }
