@@ -6,7 +6,7 @@
     tools:context=".ui.WeatherActivity">
 
     <TextView
-        android:id="@+id/title_city"
+        android:id="@+id/title_county"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
