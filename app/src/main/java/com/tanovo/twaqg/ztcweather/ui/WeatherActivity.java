@@ -2,6 +2,7 @@ package com.tanovo.twaqg.ztcweather.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -25,6 +26,7 @@ import com.bumptech.glide.Glide;
 import com.tanovo.twaqg.ztcweather.R;
 import com.tanovo.twaqg.ztcweather.gson.Forecast;
 import com.tanovo.twaqg.ztcweather.gson.Weather;
+import com.tanovo.twaqg.ztcweather.service.AutoUpdateService;
 import com.tanovo.twaqg.ztcweather.util.HttpUtil;
 import com.tanovo.twaqg.ztcweather.util.Utility;
 
@@ -183,25 +185,34 @@ public class WeatherActivity extends AppCompatActivity {
     }
 
     public void showWeatherInfo(Weather weather){
-        String countyName=weather.basic.countyName;
-        String updateTime=weather.update.localDate;
+        if (weather!=null&&"ok".equals(weather.status)){
+            String countyName=weather.basic.countyName;
+            String updateTime=weather.update.localDate;
 
-        titleCounty.setText(countyName);
-        titleUpdateTime.setText(updateTime);
+            titleCounty.setText(countyName);
+            titleUpdateTime.setText(updateTime);
 
-        forecastLayout.removeAllViews();
-        for (Forecast forecast:weather.forecastList){
-            View view= LayoutInflater.from(this).inflate(R.layout.forecast_item,forecastLayout,false);
-            TextView dateText=(TextView) view.findViewById(R.id.date_text);
-            TextView infoText=(TextView)view.findViewById(R.id.info_text);
-            TextView maxText=(TextView)view.findViewById(R.id.max_text);
-            TextView minText=(TextView)view.findViewById(R.id.min_text);
-            dateText.setText(forecast.date);
-            infoText.setText(forecast.cond_txt_d);
-            maxText.setText(forecast.tmp_max);
-            minText.setText(forecast.tmp_min);
-            forecastLayout.addView(view);
+            forecastLayout.removeAllViews();
+            for (Forecast forecast:weather.forecastList){
+                View view= LayoutInflater.from(this).inflate(R.layout.forecast_item,forecastLayout,false);
+                TextView dateText=(TextView) view.findViewById(R.id.date_text);
+                TextView infoText=(TextView)view.findViewById(R.id.info_text);
+                TextView maxText=(TextView)view.findViewById(R.id.max_text);
+                TextView minText=(TextView)view.findViewById(R.id.min_text);
+                dateText.setText(forecast.date);
+                infoText.setText(forecast.cond_txt_d);
+                maxText.setText(forecast.tmp_max);
+                minText.setText(forecast.tmp_min);
+                forecastLayout.addView(view);
+            }
+            weatherLayout.setVisibility(View.VISIBLE);
+            Intent intent=new Intent(this, AutoUpdateService.class);
+            startService(intent);
+        }else {
+            Toast.makeText(WeatherActivity.this,"获取天气信息失败",Toast.LENGTH_SHORT).show();
         }
-        weatherLayout.setVisibility(View.VISIBLE);
+
+
+
     }
 }
